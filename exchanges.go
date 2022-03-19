@@ -6,15 +6,14 @@ import (
 	"net/http"
 )
 
-const API_BASE = "https://api.twelvedata.com"
 const EXCHANGES_ENDPOINT = "/exchanges"
 
-type Type string
+type ExchangeType string
 
 const (
-	Stock Type = "stock"
-	ETF   Type = "etf"
-	Index Type = "index"
+	StockExchange ExchangeType = "stock"
+	ETFExchange   ExchangeType = "etf"
+	IndexExchange ExchangeType = "index"
 )
 
 type Exchange struct {
@@ -29,15 +28,15 @@ type exchangesResponse struct {
 }
 
 type ExchangesRequest struct {
-	Type    Type
+	Type    ExchangeType
 	Name    string
 	Code    string
 	Country string
 }
 
-func NewDefaultRequest() *ExchangesRequest {
+func NewExchangesRequest() *ExchangesRequest {
 	return &ExchangesRequest{
-		Type: Stock,
+		Type: StockExchange,
 	}
 }
 

@@ -1,12 +1,11 @@
 package twelvedata
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestGetExchanges(t *testing.T) {
-	exchanges := GetExchanges(NewDefaultRequest())
+	//exchanges := GetExchanges(NewExchangesRequest())
 
-	fmt.Printf("%v", exchanges)
+	//fmt.Printf("%v", exchanges)
 }
