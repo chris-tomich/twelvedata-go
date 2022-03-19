@@ -2,8 +2,6 @@ package twelvedata
 
 import (
 	"encoding/json"
-
-	"github.com/chris-tomich/twelvedata-go/net"
 )
 
 type Stock struct {
@@ -27,9 +25,7 @@ type StocksRequest struct {
 	Type     string
 }
 
-func GetStockList(request net.TwelveDataRequest) []Stock {
-	body := request.Request()
-
+func GetStockList(body []byte) []Stock {
 	data := &stocksResponse{
 		Stocks: make([]Stock, 0, 10),
 	}

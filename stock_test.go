@@ -1,18 +1,20 @@
 package twelvedata
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/chris-tomich/twelvedata-go/net/api"
 )
 
-func TestGetStocks(t *testing.T) {
-	exchanges := GetExchangeList(api.NewExchangesRequest())
+func BenchmarkGetStocks(b *testing.B) {
+	exchangeData := api.NewExchangesRequest().Request()
+	exchanges := GetExchangeList(exchangeData)
 
-	fmt.Printf("%v", exchanges[0])
+	stockData := api.NewStocksRequest(exchanges[0].Name).Request()
 
-	stocks := GetStockList(api.NewStocksRequest(exchanges[0].Name))
+	b.ReportAllocs()
 
-	fmt.Printf("%v", len(stocks))
+	for n := 0; n < b.N; n++ {
+		GetStockList(stockData)
+	}
 }

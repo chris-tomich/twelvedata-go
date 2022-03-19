@@ -2,8 +2,6 @@ package twelvedata
 
 import (
 	"encoding/json"
-
-	"github.com/chris-tomich/twelvedata-go/net"
 )
 
 type Exchange struct {
@@ -17,9 +15,7 @@ type exchangesResponse struct {
 	Exchanges []Exchange `json:"data"`
 }
 
-func GetExchangeList(request net.TwelveDataRequest) []Exchange {
-	body := request.Request()
-
+func GetExchangeList(body []byte) []Exchange {
 	data := &exchangesResponse{
 		Exchanges: make([]Exchange, 0, 10),
 	}
