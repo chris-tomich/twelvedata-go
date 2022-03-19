@@ -4,24 +4,23 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/chris-tomich/twelvedata-go"
 	"github.com/chris-tomich/twelvedata-go/net"
 )
 
 const StocksEndpoint = "/stocks"
 
-func NewStocksRequest(e *twelvedata.Exchange) *StockListRequest {
+func NewStocksRequest(exchange string) *StockListRequest {
 	return &StockListRequest{
-		Exchange: e,
+		Exchange: exchange,
 	}
 }
 
 type StockListRequest struct {
-	Exchange *twelvedata.Exchange
+	Exchange string
 }
 
 func (req *StockListRequest) Request() []byte {
-	response, err := http.Get(net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange.Name)
+	response, err := http.Get(net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange)
 
 	if err != nil {
 		panic(err)

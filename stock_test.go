@@ -12,7 +12,7 @@ func TestGetStocks(t *testing.T) {
 
 	fmt.Printf("%v", exchanges[0])
 
-	stocks := GetStockList(NewStocksRequest(&exchanges[0]))
+	stocks := GetStockList(api.NewStocksRequest(exchanges[0].Name))
 
 	fmt.Printf("%v", len(stocks))
 }
