@@ -7,12 +7,31 @@ import (
 	"github.com/chris-tomich/twelvedata-go/net"
 )
 
-const EXCHANGES_ENDPOINT = "/exchanges"
+const ExchangesEndpoint = "/exchanges"
 
-type ExchangeListRequest struct{}
+type ExchangeType string
+
+const (
+	StockExchange ExchangeType = "stock"
+	ETFExchange   ExchangeType = "etf"
+	IndexExchange ExchangeType = "index"
+)
+
+func NewExchangesRequest() *ExchangeListRequest {
+	return &ExchangeListRequest{
+		Type: StockExchange,
+	}
+}
+
+type ExchangeListRequest struct {
+	Type    ExchangeType
+	Name    string
+	Code    string
+	Country string
+}
 
 func (req *ExchangeListRequest) Request() []byte {
-	response, err := http.Get(net.API_BASE + EXCHANGES_ENDPOINT)
+	response, err := http.Get(net.APIBase + ExchangesEndpoint)
 
 	if err != nil {
 		panic(err)

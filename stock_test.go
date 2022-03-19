@@ -3,10 +3,12 @@ package twelvedata
 import (
 	"fmt"
 	"testing"
+
+	"github.com/chris-tomich/twelvedata-go/net/api"
 )
 
 func TestGetStocks(t *testing.T) {
-	exchanges := GetExchangeList(NewExchangesRequest())
+	exchanges := GetExchangeList(api.NewExchangesRequest())
 
 	fmt.Printf("%v", exchanges[0])
 

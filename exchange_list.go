@@ -6,14 +6,6 @@ import (
 	"github.com/chris-tomich/twelvedata-go/net"
 )
 
-type ExchangeType string
-
-const (
-	StockExchange ExchangeType = "stock"
-	ETFExchange   ExchangeType = "etf"
-	IndexExchange ExchangeType = "index"
-)
-
 type Exchange struct {
 	Name     string
 	Code     string
@@ -23,19 +15,6 @@ type Exchange struct {
 
 type exchangesResponse struct {
 	Exchanges []Exchange `json:"data"`
-}
-
-type ExchangesRequest struct {
-	Type    ExchangeType
-	Name    string
-	Code    string
-	Country string
-}
-
-func NewExchangesRequest() *ExchangesRequest {
-	return &ExchangesRequest{
-		Type: StockExchange,
-	}
 }
 
 func GetExchangeList(request net.TwelveDataRequest) []Exchange {
