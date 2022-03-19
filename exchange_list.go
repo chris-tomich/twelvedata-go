@@ -2,11 +2,9 @@ package twelvedata
 
 import (
 	"encoding/json"
-	"io"
-	"net/http"
-)
 
-const EXCHANGES_ENDPOINT = "/exchanges"
+	"github.com/chris-tomich/twelvedata-go/net"
+)
 
 type ExchangeType string
 
@@ -40,21 +38,14 @@ func NewExchangesRequest() *ExchangesRequest {
 	}
 }
 
-func GetExchangeList(request *ExchangesRequest) []Exchange {
-	response, err := http.Get(API_BASE + EXCHANGES_ENDPOINT)
-
-	if err != nil {
-		panic(err)
-	}
-
-	defer response.Body.Close()
-	body, err := io.ReadAll(response.Body)
+func GetExchangeList(request net.TwelveDataRequest) []Exchange {
+	body := request.Request()
 
 	data := &exchangesResponse{
 		Exchanges: make([]Exchange, 0, 10),
 	}
 
-	err = json.Unmarshal(body, data)
+	err := json.Unmarshal(body, data)
 
 	if err != nil {
 		panic(err)
