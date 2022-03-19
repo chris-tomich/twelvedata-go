@@ -6,11 +6,11 @@ import (
 )
 
 func TestGetStocks(t *testing.T) {
-	exchanges := GetExchanges(NewExchangesRequest())
+	exchanges := GetExchangeList(NewExchangesRequest())
 
 	fmt.Printf("%v", exchanges[0])
 
-	stocks := GetStocks(NewStocksRequest(&exchanges[0]))
+	stocks := GetStockList(NewStocksRequest(&exchanges[0]))
 
 	fmt.Printf("%v", len(stocks))
 }

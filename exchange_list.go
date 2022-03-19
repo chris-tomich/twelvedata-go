@@ -40,7 +40,7 @@ func NewExchangesRequest() *ExchangesRequest {
 	}
 }
 
-func GetExchanges(request *ExchangesRequest) []Exchange {
+func GetExchangeList(request *ExchangesRequest) []Exchange {
 	response, err := http.Get(API_BASE + EXCHANGES_ENDPOINT)
 
 	if err != nil {

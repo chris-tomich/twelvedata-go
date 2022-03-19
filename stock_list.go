@@ -35,7 +35,7 @@ func NewStocksRequest(e *Exchange) *StocksRequest {
 	}
 }
 
-func GetStocks(request *StocksRequest) []Stock {
+func GetStockList(request *StocksRequest) []Stock {
 	response, err := http.Get(API_BASE + STOCKS_ENDPOINT + "?exchange=" + request.Exchange)
 
 	if err != nil {
