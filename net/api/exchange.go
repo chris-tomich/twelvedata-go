@@ -31,7 +31,7 @@ type ExchangeListRequest struct {
 }
 
 func (req *ExchangeListRequest) Request() []byte {
-	response, err := http.Get(net.APIBase + ExchangesEndpoint)
+	response, err := http.Get(net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,")
 
 	if err != nil {
 		panic(err)

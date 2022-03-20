@@ -1,17 +1,14 @@
 package twelvedata
 
-import (
-	"encoding/json"
-)
+import "github.com/jszwec/csvutil"
 
 type Stock struct {
-	Symbol   string
-	Name     string
-	Currency string
-	Exchange string
-	MicCode  string `json:"mic_code"`
-	Country  string
-	Type     string
+	Symbol   string `csv:"symbol"`
+	Name     string `csv:"name"`
+	Currency string `csv:"currency"`
+	Exchange string `csv:"exchange"`
+	Country  string `csv:"country"`
+	Type     string `csv:"type"`
 }
 
 type stocksResponse struct {
@@ -30,7 +27,7 @@ func GetStockList(body []byte) []Stock {
 		Stocks: make([]Stock, 0, 10),
 	}
 
-	err := json.Unmarshal(body, data)
+	err := csvutil.Unmarshal(body, &data.Stocks)
 
 	if err != nil {
 		panic(err)

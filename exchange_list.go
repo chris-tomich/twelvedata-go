@@ -1,14 +1,14 @@
 package twelvedata
 
 import (
-	"encoding/json"
+	"github.com/jszwec/csvutil"
 )
 
 type Exchange struct {
-	Name     string
-	Code     string
-	Country  string
-	Timezone string
+	Name     string `csv:"name"`
+	Code     string `csv:"code"`
+	Country  string `csv:"country"`
+	Timezone string `csv:"timezone"`
 }
 
 type exchangesResponse struct {
@@ -20,7 +20,7 @@ func GetExchangeList(body []byte) []Exchange {
 		Exchanges: make([]Exchange, 0, 10),
 	}
 
-	err := json.Unmarshal(body, data)
+	err := csvutil.Unmarshal(body, &data.Exchanges)
 
 	if err != nil {
 		panic(err)

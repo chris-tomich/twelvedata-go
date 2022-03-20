@@ -20,7 +20,7 @@ type StockListRequest struct {
 }
 
 func (req *StockListRequest) Request() []byte {
-	response, err := http.Get(net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange)
+	response, err := http.Get(net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange + "&format=CSV&delimiter=,")
 
 	if err != nil {
 		panic(err)
