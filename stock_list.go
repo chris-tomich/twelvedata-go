@@ -1,6 +1,10 @@
 package twelvedata
 
-import "github.com/jszwec/csvutil"
+import (
+	"encoding/json"
+
+	"github.com/jszwec/csvutil"
+)
 
 type Stock struct {
 	Symbol   string `csv:"symbol"`
@@ -22,12 +26,70 @@ type StocksRequest struct {
 	Type     string
 }
 
-func GetStockList(body []byte) []Stock {
+func GetStockListJSON(body []byte) []Stock {
+	data := &stocksResponse{
+		Stocks: make([]Stock, 0, 10),
+	}
+
+	err := json.Unmarshal(body, &data)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return data.Stocks
+}
+
+func GetStockListCSV(body []byte) []Stock {
 	data := &stocksResponse{
 		Stocks: make([]Stock, 0, 10),
 	}
 
 	err := csvutil.Unmarshal(body, &data.Stocks)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return data.Stocks
+}
+
+type Unmarshaller interface {
+	Unmarshal(data []byte, v interface{}) error
+}
+
+type CSVUnmarshaller struct{}
+
+func (*CSVUnmarshaller) Unmarshal(data []byte, v interface{}) error {
+	return csvutil.Unmarshal(data, v)
+}
+
+type JSONUnmarshaller struct{}
+
+func (*JSONUnmarshaller) Unmarshal(data []byte, v interface{}) error {
+	return json.Unmarshal(data, v)
+}
+
+func GetStockListDynamicDispatch(unmarshaller Unmarshaller, body []byte) []Stock {
+	data := &stocksResponse{
+		Stocks: make([]Stock, 0, 10),
+	}
+
+	err := unmarshaller.Unmarshal(body, &data.Stocks)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return data.Stocks
+}
+
+func GetStockListStaticDispatch[U Unmarshaller](unmarshaller U, body []byte) []Stock {
+	data := &stocksResponse{
+		Stocks: make([]Stock, 0, 10),
+	}
+
+	err := unmarshaller.Unmarshal(body, &data.Stocks)
 
 	if err != nil {
 		panic(err)
