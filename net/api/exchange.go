@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -30,19 +31,20 @@ type ExchangeListRequest struct {
 	Country string
 }
 
-func (req *ExchangeListRequest) Request() []byte {
-	response, err := http.Get(net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,")
+func (req *ExchangeListRequest) Request() ([]byte, error) {
+	requestUri := net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,"
+	response, err := http.Get(requestUri)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with requesting the exchanges list; URI - '%v': %w", requestUri, err)
 	}
 
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with reading the exchanges list response body; URI - '%v'; response - '%v': %w", requestUri, response, err)
 	}
 
-	return body
+	return body, nil
 }

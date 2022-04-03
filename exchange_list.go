@@ -1,6 +1,8 @@
 package twelvedata
 
 import (
+	"fmt"
+
 	"github.com/jszwec/csvutil"
 )
 
@@ -15,7 +17,7 @@ type exchangesResponse struct {
 	Exchanges []Exchange `json:"data"`
 }
 
-func GetExchangeList(body []byte) []Exchange {
+func parseExchangeList(body []byte) ([]Exchange, error) {
 	data := &exchangesResponse{
 		Exchanges: make([]Exchange, 0, 10),
 	}
@@ -23,8 +25,8 @@ func GetExchangeList(body []byte) []Exchange {
 	err := csvutil.Unmarshal(body, &data.Exchanges)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with parsing the exchange list: %w", err)
 	}
 
-	return data.Exchanges
+	return data.Exchanges, nil
 }

@@ -1,6 +1,10 @@
 package twelvedata
 
-import "github.com/jszwec/csvutil"
+import (
+	"fmt"
+
+	"github.com/jszwec/csvutil"
+)
 
 type Stock struct {
 	Symbol   string `csv:"symbol"`
@@ -22,7 +26,7 @@ type StocksRequest struct {
 	Type     string
 }
 
-func GetStockList(body []byte) []Stock {
+func parseStockList(body []byte) ([]Stock, error) {
 	data := &stocksResponse{
 		Stocks: make([]Stock, 0, 10),
 	}
@@ -30,8 +34,8 @@ func GetStockList(body []byte) []Stock {
 	err := csvutil.Unmarshal(body, &data.Stocks)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with parsing the stock list: %w", err)
 	}
 
-	return data.Stocks
+	return data.Stocks, nil
 }

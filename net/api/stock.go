@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 
@@ -19,19 +20,20 @@ type StockListRequest struct {
 	Exchange string
 }
 
-func (req *StockListRequest) Request() []byte {
-	response, err := http.Get(net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange + "&format=CSV&delimiter=,")
+func (req *StockListRequest) Request() ([]byte, error) {
+	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange + "&format=CSV&delimiter=,"
+	response, err := http.Get(requestUri)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with requesting the stocks list; URI - '%v': %w", requestUri, err)
 	}
 
 	defer response.Body.Close()
 	body, err := io.ReadAll(response.Body)
 
 	if err != nil {
-		panic(err)
+		return nil, fmt.Errorf("issue with requesting the stocks list response body; URI - '%v'; response - '%v': %w", requestUri, response, err)
 	}
 
-	return body
+	return body, nil
 }
