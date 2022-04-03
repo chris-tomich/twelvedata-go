@@ -13,11 +13,21 @@ func NewTwelveDataClient(apiKey string) *TwelveDataClient {
 }
 
 func (client *TwelveDataClient) Exchanges() ([]Exchange, error) {
-	exchangeData, err := api.NewExchangesRequest().Request()
+	exchangesData, err := api.NewExchangesRequest().Request()
 
 	if err != nil {
 		return nil, err
 	}
 
-	return parseExchangeList(exchangeData)
+	return parseExchangeList(exchangesData)
+}
+
+func (client *TwelveDataClient) Stocks(exchange string) ([]Stock, error) {
+	stocksData, err := api.NewStocksRequest(exchange).Request()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return parseStockList(stocksData)
 }
