@@ -33,6 +33,11 @@ type ExchangeListRequest struct {
 
 func (req *ExchangeListRequest) Request() ([]byte, error) {
 	requestUri := net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,"
+
+	if req.Type != StockExchange {
+		requestUri += "&type=" + string(req.Type)
+	}
+
 	response, err := http.Get(requestUri)
 
 	if err != nil {

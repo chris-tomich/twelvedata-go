@@ -3,23 +3,17 @@ package twelvedata
 import (
 	"fmt"
 
+	"github.com/chris-tomich/twelvedata-go/datatypes"
 	"github.com/jszwec/csvutil"
 )
 
-type Exchange struct {
-	Name     string `csv:"name"`
-	Code     string `csv:"code"`
-	Country  string `csv:"country"`
-	Timezone string `csv:"timezone"`
-}
-
 type exchangesResponse struct {
-	Exchanges []Exchange `json:"data"`
+	Exchanges []datatypes.Exchange `json:"data"`
 }
 
-func parseExchangeList(body []byte) ([]Exchange, error) {
+func parseExchangeList(body []byte) ([]datatypes.Exchange, error) {
 	data := &exchangesResponse{
-		Exchanges: make([]Exchange, 0, 10),
+		Exchanges: make([]datatypes.Exchange, 0, 10),
 	}
 
 	err := csvutil.Unmarshal(body, &data.Exchanges)

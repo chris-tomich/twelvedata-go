@@ -3,20 +3,12 @@ package twelvedata
 import (
 	"fmt"
 
+	"github.com/chris-tomich/twelvedata-go/datatypes"
 	"github.com/jszwec/csvutil"
 )
 
-type Stock struct {
-	Symbol   string `csv:"symbol"`
-	Name     string `csv:"name"`
-	Currency string `csv:"currency"`
-	Exchange string `csv:"exchange"`
-	Country  string `csv:"country"`
-	Type     string `csv:"type"`
-}
-
 type stocksResponse struct {
-	Stocks []Stock `json:"data"`
+	Stocks []datatypes.Stock `json:"data"`
 }
 
 type StocksRequest struct {
@@ -26,9 +18,9 @@ type StocksRequest struct {
 	Type     string
 }
 
-func parseStockList(body []byte) ([]Stock, error) {
+func parseStockList(body []byte) ([]datatypes.Stock, error) {
 	data := &stocksResponse{
-		Stocks: make([]Stock, 0, 10),
+		Stocks: make([]datatypes.Stock, 0, 10),
 	}
 
 	err := csvutil.Unmarshal(body, &data.Stocks)

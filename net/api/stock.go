@@ -5,23 +5,24 @@ import (
 	"io"
 	"net/http"
 
+	"github.com/chris-tomich/twelvedata-go/datatypes"
 	"github.com/chris-tomich/twelvedata-go/net"
 )
 
 const StocksEndpoint = "/stocks"
 
-func NewStocksRequest(exchange string) *StockListRequest {
+func NewStocksRequest(exchange datatypes.Exchange) *StockListRequest {
 	return &StockListRequest{
 		Exchange: exchange,
 	}
 }
 
 type StockListRequest struct {
-	Exchange string
+	Exchange datatypes.Exchange
 }
 
 func (req *StockListRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange + "&format=CSV&delimiter=,"
+	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange.Name + "&format=CSV&delimiter=,"
 	response, err := http.Get(requestUri)
 
 	if err != nil {
