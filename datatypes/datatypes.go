@@ -15,3 +15,12 @@ type Stock struct {
 	Country  string `csv:"country"`
 	Type     string `csv:"type"`
 }
+
+type TimeSeriesData struct {
+	DateTime string `csv:"datetime"`
+	Open     string `csv:"open"`
+	High     string `csv:"high"`
+	Low      string `csv:"low"`
+	Close    string `csv:"close"`
+	Volume   string `csv:"volume"`
+}

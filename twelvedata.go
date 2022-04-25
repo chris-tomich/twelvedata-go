@@ -60,3 +60,13 @@ func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]d
 
 	return parseStocksList(stocksData)
 }
+
+func (client *TwelveDataClient) RequestTimeSeriesData(symbol string, interval api.Interval) ([]datatypes.TimeSeriesData, error) {
+	timeSeriesData, err := api.NewTimeSeriesRequest(client.apiKey, symbol, interval).Request()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return parseTimeSeriesData(timeSeriesData)
+}
