@@ -22,7 +22,7 @@ func (client *TwelveDataClient) RequestStockExchanges() ([]datatypes.Exchange, e
 		return nil, err
 	}
 
-	return parseExchangeList(exchangesData)
+	return parseExchangesList(exchangesData)
 }
 
 func (client *TwelveDataClient) RequestETFExchanges() ([]datatypes.Exchange, error) {
@@ -35,7 +35,7 @@ func (client *TwelveDataClient) RequestETFExchanges() ([]datatypes.Exchange, err
 		return nil, err
 	}
 
-	return parseExchangeList(exchangesData)
+	return parseExchangesList(exchangesData)
 }
 
 func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, error) {
@@ -48,7 +48,7 @@ func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, e
 		return nil, err
 	}
 
-	return parseExchangeList(exchangesData)
+	return parseExchangesList(exchangesData)
 }
 
 func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]datatypes.Stock, error) {
@@ -58,5 +58,5 @@ func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]d
 		return nil, err
 	}
 
-	return parseStockList(stocksData)
+	return parseStocksList(stocksData)
 }

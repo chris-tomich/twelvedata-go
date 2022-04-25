@@ -18,20 +18,20 @@ const (
 	IndexExchange ExchangeType = "index"
 )
 
-func NewExchangesRequest() *ExchangeListRequest {
-	return &ExchangeListRequest{
+func NewExchangesRequest() *ExchangesListRequest {
+	return &ExchangesListRequest{
 		Type: StockExchange,
 	}
 }
 
-type ExchangeListRequest struct {
+type ExchangesListRequest struct {
 	Type    ExchangeType
 	Name    string
 	Code    string
 	Country string
 }
 
-func (req *ExchangeListRequest) Request() ([]byte, error) {
+func (req *ExchangesListRequest) Request() ([]byte, error) {
 	requestUri := net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,"
 
 	if req.Type != StockExchange {

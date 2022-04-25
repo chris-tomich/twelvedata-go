@@ -18,7 +18,7 @@ type StocksRequest struct {
 	Type     string
 }
 
-func parseStockList(body []byte) ([]datatypes.Stock, error) {
+func parseStocksList(body []byte) ([]datatypes.Stock, error) {
 	data := &stocksResponse{
 		Stocks: make([]datatypes.Stock, 0, 10),
 	}

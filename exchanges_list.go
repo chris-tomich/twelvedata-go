@@ -11,7 +11,7 @@ type exchangesResponse struct {
 	Exchanges []datatypes.Exchange `json:"data"`
 }
 
-func parseExchangeList(body []byte) ([]datatypes.Exchange, error) {
+func parseExchangesList(body []byte) ([]datatypes.Exchange, error) {
 	data := &exchangesResponse{
 		Exchanges: make([]datatypes.Exchange, 0, 10),
 	}

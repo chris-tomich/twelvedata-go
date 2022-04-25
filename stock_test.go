@@ -13,7 +13,7 @@ func BenchmarkParseStocks(b *testing.B) {
 		panic(err)
 	}
 
-	exchanges, err := parseExchangeList(exchangeData)
+	exchanges, err := parseExchangesList(exchangeData)
 
 	if err != nil {
 		panic(err)
@@ -28,6 +28,6 @@ func BenchmarkParseStocks(b *testing.B) {
 	b.ReportAllocs()
 
 	for n := 0; n < b.N; n++ {
-		parseStockList(stockData)
+		parseStocksList(stockData)
 	}
 }

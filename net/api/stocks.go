@@ -11,17 +11,17 @@ import (
 
 const StocksEndpoint = "/stocks"
 
-func NewStocksRequest(exchange *datatypes.Exchange) *StockListRequest {
-	return &StockListRequest{
+func NewStocksRequest(exchange *datatypes.Exchange) *StocksListRequest {
+	return &StocksListRequest{
 		Exchange: exchange,
 	}
 }
 
-type StockListRequest struct {
+type StocksListRequest struct {
 	Exchange *datatypes.Exchange
 }
 
-func (req *StockListRequest) Request() ([]byte, error) {
+func (req *StocksListRequest) Request() ([]byte, error) {
 	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange.Name + "&format=CSV&delimiter=,"
 	response, err := http.Get(requestUri)
 
