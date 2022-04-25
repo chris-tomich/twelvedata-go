@@ -51,7 +51,7 @@ func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, e
 	return parseExchangeList(exchangesData)
 }
 
-func (client *TwelveDataClient) RequestStocks(exchange datatypes.Exchange) ([]datatypes.Stock, error) {
+func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]datatypes.Stock, error) {
 	stocksData, err := api.NewStocksRequest(exchange).Request()
 
 	if err != nil {
