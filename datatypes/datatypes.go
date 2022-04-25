@@ -22,5 +22,5 @@ type TimeSeriesData struct {
 	High     string `csv:"high"`
 	Low      string `csv:"low"`
 	Close    string `csv:"close"`
-	Volume   string `csv:"volume"`
+	Volume   string `csv:"volume,omitempty"`
 }
