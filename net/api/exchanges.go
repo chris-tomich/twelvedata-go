@@ -18,17 +18,17 @@ const (
 	IndexExchange ExchangeType = "index"
 )
 
-func NewExchangesRequest() *ExchangesListRequest {
-	return &ExchangesListRequest{
-		Type: StockExchange,
-	}
-}
-
 type ExchangesListRequest struct {
 	Type    ExchangeType
 	Name    string
 	Code    string
 	Country string
+}
+
+func NewExchangesRequest() *ExchangesListRequest {
+	return &ExchangesListRequest{
+		Type: StockExchange,
+	}
 }
 
 func (req *ExchangesListRequest) Request() ([]byte, error) {

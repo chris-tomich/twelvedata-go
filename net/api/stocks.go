@@ -11,14 +11,14 @@ import (
 
 const StocksEndpoint = "/stocks"
 
+type StocksListRequest struct {
+	Exchange *datatypes.Exchange
+}
+
 func NewStocksRequest(exchange *datatypes.Exchange) *StocksListRequest {
 	return &StocksListRequest{
 		Exchange: exchange,
 	}
-}
-
-type StocksListRequest struct {
-	Exchange *datatypes.Exchange
 }
 
 func (req *StocksListRequest) Request() ([]byte, error) {
