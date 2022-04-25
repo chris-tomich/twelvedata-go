@@ -30,3 +30,7 @@ type TimeSeriesRequest struct {
 	EndDate       string
 	PreviousClose string
 }
+
+func NewTimeSeriesRequest() *TimeSeriesRequest {
+	return &TimeSeriesRequest{}
+}
