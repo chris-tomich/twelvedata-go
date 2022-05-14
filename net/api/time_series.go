@@ -57,15 +57,16 @@ type TimeSeriesRequest struct {
 
 func NewTimeSeriesRequest(apikey string, symbol string, interval Interval) *TimeSeriesRequest {
 	return &TimeSeriesRequest{
-		Type:     Stock,
-		Symbol:   symbol,
-		Interval: interval,
-		APIKey:   apikey,
+		Type:       Stock,
+		Symbol:     symbol,
+		Interval:   interval,
+		APIKey:     apikey,
+		OutputSize: 5000,
 	}
 }
 
 func (req *TimeSeriesRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + TimeSeriesEndpoint + "?format=CSV&delimiter=,&apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval)
+	requestUri := net.APIBase + TimeSeriesEndpoint + "?format=CSV&delimiter=,&apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval) + fmt.Sprintf("&outputsize=%v", req.OutputSize)
 
 	if req.Type != Stock {
 		requestUri += "&type=" + string(req.Type)
