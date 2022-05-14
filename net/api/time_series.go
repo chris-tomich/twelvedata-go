@@ -65,7 +65,7 @@ func NewTimeSeriesRequest(apikey string, symbol string, interval Interval) *Time
 }
 
 func (req *TimeSeriesRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + TimeSeriesEndpoint + "?format=CSV&delimiter=,"
+	requestUri := net.APIBase + TimeSeriesEndpoint + "?format=CSV&delimiter=,&apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval)
 
 	if req.Type != Stock {
 		requestUri += "&type=" + string(req.Type)

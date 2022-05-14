@@ -13,7 +13,7 @@ func parseTimeSeriesData(body []byte) ([]datatypes.TimeSeriesData, error) {
 	err := csvutil.Unmarshal(body, &data)
 
 	if err != nil {
-		return nil, fmt.Errorf("issue with parsing the time series data: %w", err)
+		return nil, fmt.Errorf("issue with parsing the time series data: %w;\nbody: %v", err, string(body))
 	}
 
 	return data, nil
