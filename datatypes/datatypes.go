@@ -24,3 +24,8 @@ type TimeSeriesData struct {
 	Close    string `csv:"close"`
 	Volume   string `csv:"volume,omitempty"`
 }
+
+type EarliestTimestamp struct {
+	DateTime string `json:"datetime"`
+	UnixTime int64  `json:"unix_time"`
+}

@@ -70,3 +70,13 @@ func (client *TwelveDataClient) RequestTimeSeriesData(symbol string, interval ap
 
 	return parseTimeSeriesData(timeSeriesData)
 }
+
+func (client *TwelveDataClient) RequestEarliestTimestamp(symbol string, interval api.Interval) (*datatypes.EarliestTimestamp, error) {
+	earliestTimestampData, err := api.NewEarliestTimestampRequest(client.apiKey, symbol, interval).Request()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return parseEarliestTimestamp(earliestTimestampData)
+}
