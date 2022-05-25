@@ -19,7 +19,7 @@ func parseExchangesList(body []byte) ([]datatypes.Exchange, error) {
 	err := csvutil.Unmarshal(body, &data.Exchanges)
 
 	if err != nil {
-		return nil, fmt.Errorf("issue with parsing the exchange list: %w", err)
+		return nil, fmt.Errorf("issue with parsing the exchange list: %w\n\ndata received:\n%v\n\n", err, string(body))
 	}
 
 	return data.Exchanges, nil

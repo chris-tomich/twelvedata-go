@@ -1,6 +1,8 @@
 package twelvedata
 
 import (
+	"fmt"
+
 	"github.com/chris-tomich/twelvedata-go/datatypes"
 	"github.com/chris-tomich/twelvedata-go/net/api"
 )
@@ -10,13 +12,17 @@ type TwelveDataClient struct {
 }
 
 func NewTwelveDataClient(apiKey string) *TwelveDataClient {
+	if apiKey == "" {
+		panic(fmt.Errorf("apiKey can't be empty"))
+	}
+
 	return &TwelveDataClient{
 		apiKey,
 	}
 }
 
 func (client *TwelveDataClient) RequestStockExchanges() ([]datatypes.Exchange, error) {
-	exchangesData, err := api.NewExchangesRequest().Request()
+	exchangesData, err := api.NewExchangesRequest(client.apiKey).Request()
 
 	if err != nil {
 		return nil, err
@@ -26,7 +32,7 @@ func (client *TwelveDataClient) RequestStockExchanges() ([]datatypes.Exchange, e
 }
 
 func (client *TwelveDataClient) RequestETFExchanges() ([]datatypes.Exchange, error) {
-	req := api.NewExchangesRequest()
+	req := api.NewExchangesRequest(client.apiKey)
 	req.Type = api.ETFExchange
 
 	exchangesData, err := req.Request()
@@ -39,7 +45,7 @@ func (client *TwelveDataClient) RequestETFExchanges() ([]datatypes.Exchange, err
 }
 
 func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, error) {
-	req := api.NewExchangesRequest()
+	req := api.NewExchangesRequest(client.apiKey)
 	req.Type = api.IndexExchange
 
 	exchangesData, err := req.Request()
@@ -52,7 +58,7 @@ func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, e
 }
 
 func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]datatypes.Stock, error) {
-	stocksData, err := api.NewStocksRequest(exchange).Request()
+	stocksData, err := api.NewStocksRequest(client.apiKey, exchange).Request()
 
 	if err != nil {
 		return nil, err

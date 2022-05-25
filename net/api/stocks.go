@@ -13,16 +13,18 @@ const StocksEndpoint = "/stocks"
 
 type StocksListRequest struct {
 	Exchange *datatypes.Exchange
+	APIKey   string
 }
 
-func NewStocksRequest(exchange *datatypes.Exchange) *StocksListRequest {
+func NewStocksRequest(apikey string, exchange *datatypes.Exchange) *StocksListRequest {
 	return &StocksListRequest{
 		Exchange: exchange,
+		APIKey:   apikey,
 	}
 }
 
 func (req *StocksListRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange.Name + "&format=CSV&delimiter=,"
+	requestUri := net.APIBase + StocksEndpoint + "?exchange=" + req.Exchange.Name + "&format=CSV&delimiter=,&apikey=" + req.APIKey
 	response, err := http.Get(requestUri)
 
 	if err != nil {

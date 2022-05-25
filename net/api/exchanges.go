@@ -23,16 +23,18 @@ type ExchangesListRequest struct {
 	Name    string
 	Code    string
 	Country string
+	APIKey  string
 }
 
-func NewExchangesRequest() *ExchangesListRequest {
+func NewExchangesRequest(apikey string) *ExchangesListRequest {
 	return &ExchangesListRequest{
-		Type: StockExchange,
+		Type:   StockExchange,
+		APIKey: apikey,
 	}
 }
 
 func (req *ExchangesListRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,"
+	requestUri := net.APIBase + ExchangesEndpoint + "?format=CSV&delimiter=,&apikey=" + req.APIKey
 
 	if req.Type != StockExchange {
 		requestUri += "&type=" + string(req.Type)

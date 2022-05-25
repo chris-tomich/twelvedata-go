@@ -25,7 +25,7 @@ func NewEarliestTimestampRequest(apikey string, symbol string, interval Interval
 }
 
 func (req *EarliestTimestampRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + EarliestTimestampEndpoint + "?delimiter=,&apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval)
+	requestUri := net.APIBase + EarliestTimestampEndpoint + "?apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval)
 
 	response, err := http.Get(requestUri)
 
