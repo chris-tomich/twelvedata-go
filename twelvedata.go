@@ -67,14 +67,22 @@ func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]d
 	return parseStocksList(stocksData)
 }
 
-func (client *TwelveDataClient) RequestTimeSeriesData(symbol string, interval api.Interval) ([]datatypes.TimeSeriesData, error) {
-	timeSeriesData, err := api.NewTimeSeriesRequest(client.apiKey, symbol, interval).Request()
+func (client *TwelveDataClient) BuildTimeSeriesDataRequest(symbol string, interval api.Interval) *api.TimeSeriesRequest {
+	return api.NewTimeSeriesRequest(client.apiKey, symbol, interval)
+}
+
+func (client *TwelveDataClient) SendTimeSeriesDataRequest(req *api.TimeSeriesRequest) ([]datatypes.TimeSeriesData, error) {
+	timeSeriesData, err := req.Request()
 
 	if err != nil {
 		return nil, err
 	}
 
 	return parseTimeSeriesData(timeSeriesData)
+}
+
+func (client *TwelveDataClient) RequestTimeSeriesData(symbol string, interval api.Interval) ([]datatypes.TimeSeriesData, error) {
+	return client.SendTimeSeriesDataRequest(client.BuildTimeSeriesDataRequest(symbol, interval))
 }
 
 func (client *TwelveDataClient) RequestEarliestTimestamp(symbol string, interval api.Interval) (*datatypes.EarliestTimestamp, error) {

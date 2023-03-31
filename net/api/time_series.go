@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/chris-tomich/twelvedata-go/net"
 )
@@ -50,8 +51,8 @@ type TimeSeriesRequest struct {
 	Order         string
 	Timezone      string
 	Date          string
-	StartDate     string
-	EndDate       string
+	StartDate     *time.Time
+	EndDate       *time.Time
 	PreviousClose string
 }
 
@@ -65,11 +66,23 @@ func NewTimeSeriesRequest(apikey string, symbol string, interval Interval) *Time
 	}
 }
 
+func formatTwelveDataDateTime(date time.Time) string {
+	return date.Format(time.DateTime)
+}
+
 func (req *TimeSeriesRequest) Request() ([]byte, error) {
-	requestUri := net.APIBase + TimeSeriesEndpoint + "?format=CSV&delimiter=,&apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval) + fmt.Sprintf("&outputsize=%v", req.OutputSize)
+	requestUri := fmt.Sprintf("%v%v?format=CSV&delimiter=,&apikey=%v&symbol=%v&interval=%v&outputsize=%v", net.APIBase, TimeSeriesEndpoint, req.APIKey, req.Symbol, string(req.Interval), req.OutputSize)
 
 	if req.Type != Stock {
-		requestUri += "&type=" + string(req.Type)
+		requestUri = fmt.Sprintf("%v&type=%v", requestUri, string(req.Type))
+	}
+
+	if req.StartDate != nil {
+		requestUri = fmt.Sprintf("%v&start_date=%v", requestUri, formatTwelveDataDateTime(*req.StartDate))
+
+		if req.EndDate != nil {
+			requestUri = fmt.Sprintf("%v&end_date=%v", requestUri, formatTwelveDataDateTime(*req.EndDate))
+		}
 	}
 
 	response, err := http.Get(requestUri)
