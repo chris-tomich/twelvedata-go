@@ -7,7 +7,7 @@ import (
 )
 
 func BenchmarkParseStocks(b *testing.B) {
-	exchangeData, err := api.NewExchangesRequest().Request()
+	exchangeData, err := api.NewExchangesRequest("").Request()
 
 	if err != nil {
 		panic(err)
@@ -19,7 +19,7 @@ func BenchmarkParseStocks(b *testing.B) {
 		panic(err)
 	}
 
-	stockData, err := api.NewStocksRequest(&exchanges[0]).Request()
+	stockData, err := api.NewStocksRequest("", exchanges[0].Name).Request()
 
 	if err != nil {
 		panic(err)

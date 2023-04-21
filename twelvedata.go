@@ -2,6 +2,7 @@ package twelvedata
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/chris-tomich/twelvedata-go/datatypes"
 	"github.com/chris-tomich/twelvedata-go/net/api"
@@ -57,8 +58,8 @@ func (client *TwelveDataClient) RequestIndexExchanges() ([]datatypes.Exchange, e
 	return parseExchangesList(exchangesData)
 }
 
-func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]datatypes.Stock, error) {
-	stocksData, err := api.NewStocksRequest(client.apiKey, exchange).Request()
+func (client *TwelveDataClient) RequestStocks(exchangeCode string) ([]datatypes.Stock, error) {
+	stocksData, err := api.NewStocksRequest(client.apiKey, exchangeCode).Request()
 
 	if err != nil {
 		return nil, err
@@ -67,8 +68,8 @@ func (client *TwelveDataClient) RequestStocks(exchange *datatypes.Exchange) ([]d
 	return parseStocksList(stocksData)
 }
 
-func (client *TwelveDataClient) BuildTimeSeriesDataRequest(symbol string, interval api.Interval) *api.TimeSeriesRequest {
-	return api.NewTimeSeriesRequest(client.apiKey, symbol, interval)
+func (client *TwelveDataClient) BuildTimeSeriesDataRequest(miCode string, symbol string, interval api.Interval, startDate time.Time, endDate time.Time) *api.TimeSeriesRequest {
+	return api.NewTimeSeriesRequest(client.apiKey, miCode, symbol, interval, startDate, endDate)
 }
 
 func (client *TwelveDataClient) SendTimeSeriesDataRequest(req *api.TimeSeriesRequest) ([]datatypes.TimeSeriesData, error) {
@@ -81,8 +82,8 @@ func (client *TwelveDataClient) SendTimeSeriesDataRequest(req *api.TimeSeriesReq
 	return parseTimeSeriesData(timeSeriesData)
 }
 
-func (client *TwelveDataClient) RequestTimeSeriesData(symbol string, interval api.Interval) ([]datatypes.TimeSeriesData, error) {
-	return client.SendTimeSeriesDataRequest(client.BuildTimeSeriesDataRequest(symbol, interval))
+func (client *TwelveDataClient) RequestTimeSeriesData(miCode string, symbol string, interval api.Interval, startDate time.Time, endDate time.Time) ([]datatypes.TimeSeriesData, error) {
+	return client.SendTimeSeriesDataRequest(client.BuildTimeSeriesDataRequest(miCode, symbol, interval, startDate, endDate))
 }
 
 func (client *TwelveDataClient) RequestEarliestTimestamp(symbol string, interval api.Interval) (*datatypes.EarliestTimestamp, error) {

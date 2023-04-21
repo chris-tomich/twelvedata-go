@@ -40,6 +40,7 @@ type TimeSeriesRequest struct {
 	Symbol        string
 	Interval      Interval
 	Exchange      string
+	MICode        string
 	Country       string
 	Type          InstrumentType
 	OutputSize    int
@@ -51,16 +52,19 @@ type TimeSeriesRequest struct {
 	Order         string
 	Timezone      string
 	Date          string
-	StartDate     *time.Time
-	EndDate       *time.Time
+	StartDate     time.Time
+	EndDate       time.Time
 	PreviousClose string
 }
 
-func NewTimeSeriesRequest(apikey string, symbol string, interval Interval) *TimeSeriesRequest {
+func NewTimeSeriesRequest(apikey string, miCode string, symbol string, interval Interval, startDate time.Time, endDate time.Time) *TimeSeriesRequest {
 	return &TimeSeriesRequest{
 		Type:       Stock,
+		MICode:     miCode,
 		Symbol:     symbol,
 		Interval:   interval,
+		StartDate:  startDate,
+		EndDate:    endDate,
 		APIKey:     apikey,
 		OutputSize: 5000,
 	}
@@ -71,19 +75,14 @@ func formatTwelveDataDateTime(date time.Time) string {
 }
 
 func (req *TimeSeriesRequest) Request() ([]byte, error) {
-	requestUri := fmt.Sprintf("%v%v?format=CSV&delimiter=,&apikey=%v&symbol=%v&interval=%v&outputsize=%v", net.APIBase, TimeSeriesEndpoint, req.APIKey, req.Symbol, string(req.Interval), req.OutputSize)
+	requestUri := fmt.Sprintf("%v%v?format=CSV&delimiter=,&apikey=%v&mic_code=%v&symbol=%v&interval=%v", net.APIBase, TimeSeriesEndpoint, req.APIKey, req.MICode, req.Symbol, string(req.Interval))
 
 	if req.Type != Stock {
 		requestUri = fmt.Sprintf("%v&type=%v", requestUri, string(req.Type))
 	}
 
-	if req.StartDate != nil {
-		requestUri = fmt.Sprintf("%v&start_date=%v", requestUri, formatTwelveDataDateTime(*req.StartDate))
-
-		if req.EndDate != nil {
-			requestUri = fmt.Sprintf("%v&end_date=%v", requestUri, formatTwelveDataDateTime(*req.EndDate))
-		}
-	}
+	requestUri = fmt.Sprintf("%v&start_date=%v", requestUri, formatTwelveDataDateTime(req.StartDate))
+	requestUri = fmt.Sprintf("%v&end_date=%v", requestUri, formatTwelveDataDateTime(req.EndDate))
 
 	response, err := http.Get(requestUri)
 

@@ -21,7 +21,7 @@ const (
 type ExchangesListRequest struct {
 	Type    ExchangeType
 	Name    string
-	Code    string
+	MICode  string
 	Country string
 	APIKey  string
 }
