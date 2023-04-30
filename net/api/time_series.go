@@ -22,7 +22,39 @@ const (
 
 type Interval string
 
+func (i Interval) DateTimeFormat() string {
+	switch i {
+	case Unknown:
+		return time.DateTime
+	case Minute1:
+		return time.DateTime
+	case Minute5:
+		return time.DateTime
+	case Minute15:
+		return time.DateTime
+	case Minute30:
+		return time.DateTime
+	case Minute45:
+		return time.DateTime
+	case Hourly1:
+		return time.DateTime
+	case Hourly2:
+		return time.DateTime
+	case Hourly4:
+		return time.DateTime
+	case Daily:
+		return time.DateOnly
+	case Weekly:
+		return time.DateOnly
+	case Monthly:
+		return time.DateOnly
+	default:
+		return time.DateTime
+	}
+}
+
 const (
+	Unknown  Interval = "Unknown"
 	Minute1  Interval = "1min"
 	Minute5  Interval = "5min"
 	Minute15 Interval = "15min"
