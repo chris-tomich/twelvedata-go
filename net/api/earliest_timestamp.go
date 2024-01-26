@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
@@ -27,7 +28,16 @@ func NewEarliestTimestampRequest(apikey string, symbol string, interval Interval
 func (req *EarliestTimestampRequest) Request() ([]byte, error) {
 	requestUri := net.APIBase + EarliestTimestampEndpoint + "?apikey=" + req.APIKey + "&symbol=" + req.Symbol + "&interval=" + string(req.Interval)
 
-	response, err := http.Get(requestUri)
+	// TODO: Remove this when TwelveData fixes the TLS for their API
+	// Create a custom HTTP client that skips TLS verification
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// Restore this call when TwelveData fixes the TLS for their API
+	// response, err := http.Get(requestUri)
+	response, err := client.Get(requestUri)
 
 	if err != nil {
 		return nil, fmt.Errorf("issue with requesting the earliest timestamp data; URI - '%v': %w", requestUri, err)

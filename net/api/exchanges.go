@@ -1,6 +1,7 @@
 package api
 
 import (
+	"crypto/tls"
 	"fmt"
 	"io"
 	"net/http"
@@ -40,7 +41,16 @@ func (req *ExchangesListRequest) Request() ([]byte, error) {
 		requestUri += "&type=" + string(req.Type)
 	}
 
-	response, err := http.Get(requestUri)
+	// TODO: Remove this when TwelveData fixes the TLS for their API
+	// Create a custom HTTP client that skips TLS verification
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+	client := &http.Client{Transport: tr}
+
+	// Restore this call when TwelveData fixes the TLS for their API
+	// response, err := http.Get(requestUri)
+	response, err := client.Get(requestUri)
 
 	if err != nil {
 		return nil, fmt.Errorf("issue with requesting the exchanges list; URI - '%v': %w", requestUri, err)
